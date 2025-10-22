@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="text-center mb-4 text-primary"><i class="fa-solid fa-user-shield me-2"></i>Admin Dashboard</h2>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card stat-card p-3 shadow-sm">
+        <h3 class="mb-0 text-success">{{ total_users }}</h3>
+        <small class="text-muted">Total Users</small>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card stat-card p-3 shadow-sm">
+        <h3 class="mb-0 text-warning">{{ total_sellers }}</h3>
+        <small class="text-muted">Total Sellers</small>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card stat-card p-3 shadow-sm">
+        <h3 class="mb-0 text-info">{{ total_customers }}</h3>
+        <small class="text-muted">Total Customers</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <a class="btn btn-outline-primary me-2" href="{{ url_for('users_bp.admin_view_users') }}"><i class="fa-solid fa-users me-1"></i>Manage Users</a>
+    <a class="btn btn-outline-success" href="{{ url_for('orders_bp.admin_orders') }}"><i class="fa-solid fa-boxes me-1"></i>View Orders</a>
+  </div>
+</div>
+{% endblock %}

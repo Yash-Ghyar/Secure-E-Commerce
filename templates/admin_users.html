@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Manage Users{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="text-center mb-4 text-primary"><i class="fa-solid fa-users me-2"></i>Manage Users</h2>
+
+  <div class="table-responsive shadow-sm">
+    <table class="table table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Username</th><th>Role</th><th>Status</th><th>Created</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td>{{ u.username }}</td>
+          <td>{{ u.role }}</td>
+          <td>
+            {% if u.active %}
+              <span class="badge bg-success">Active</span>
+            {% else %}
+              <span class="badge bg-danger">Inactive</span>
+            {% endif %}
+          </td>
+          <td>{{ u.created_at }}</td>
+          <td>
+            <form action="{{ url_for('users_bp.admin_toggle_active', username=u.username) }}" method="POST" class="d-inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              {% if u.active %}
+                <button class="btn btn-sm btn-warning">Deactivate</button>
+              {% else %}
+                <button class="btn btn-sm btn-success">Reactivate</button>
+              {% endif %}
+            </form>
+
+            <form action="{{ url_for('users_bp.admin_delete_user', username=u.username) }}" method="POST" class="d-inline ms-1" onsubmit="return confirm('Delete {{ u.username }}?');">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn-sm btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

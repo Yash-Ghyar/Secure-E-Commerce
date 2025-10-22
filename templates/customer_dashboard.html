@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Customer Dashboard{% endblock %}
+{% block content %}
+<div class="container py-5 text-center">
+  <h2 class="text-success mb-3"><i class="fa-solid fa-user me-2"></i>Welcome, {{ user }}</h2>
+  <div class="mb-4">
+    <a class="btn btn-primary me-2" href="{{ url_for('products_bp.list_products') }}">Browse Products</a>
+    <a class="btn btn-outline-success" href="{{ url_for('orders_bp.customer_orders') }}">Your Orders</a>
+  </div>
+
+  <div class="card shadow-sm p-4">
+    <p class="mb-0 text-muted">Buy products securely. Your activities are logged for audit and security.</p>
+  </div>
+</div>
+{% endblock %}

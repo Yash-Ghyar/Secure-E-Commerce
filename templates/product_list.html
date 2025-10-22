@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Products{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="text-center text-info mb-4"><i class="fa-solid fa-bag-shopping me-2"></i>Available Products</h2>
+
+  {% if products %}
+  <div class="row">
+    {% for p in products %}
+    <div class="col-md-4 mb-4">
+      <div class="card product-card h-100 shadow-sm">
+        {% if p.image %}
+          <img src="{{ url_for('static', filename='uploads/' + p.image) }}" class="card-img-top" style="height:220px; object-fit:cover;">
+        {% else %}
+          <img src="https://via.placeholder.com/400x220?text=No+Image" class="card-img-top">
+        {% endif %}
+
+        <div class="card-body">
+          <h5 class="card-title">{{ p.name }}</h5>
+          <p class="small text-muted mb-2">{{ p.description }}</p>
+          <p class="fw-bold mb-1">₹{{ p.price }}</p>
+          <p class="small text-muted">Stock: {{ p.stock }}</p>
+        </div>
+
+        <div class="card-footer text-center">
+          {% if session.get('role') == 'customer' %}
+            <a class="btn btn-success w-100" href="{{ url_for('orders_bp.buy_product', pid=p.id) }}">Buy Now</a>
+          {% elif session.get('role') == 'seller' and session.get('username') == p.seller %}
+            <a class="btn btn-outline-primary w-100" href="{{ url_for('products_bp.edit_product', pid=p.id) }}">Edit</a>
+          {% else %}
+            <a class="btn btn-outline-secondary w-100" href="{{ url_for('users_bp.login') }}">Login as customer to buy</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+    <div class="alert alert-info text-center">No products available at the moment.</div>
+  {% endif %}
+</div>
+{% endblock %}

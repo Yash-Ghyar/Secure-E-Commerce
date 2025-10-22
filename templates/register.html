@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Register | Secure E-Commerce{% endblock %}
+{% block content %}
+<div class="auth-wrapper d-flex align-items-center justify-content-center">
+  <div class="card auth-card shadow-lg p-4 rounded-4" style="min-width:320px; max-width:480px;">
+    <h3 class="text-center mb-3 text-success"><i class="fa-solid fa-user-plus me-2"></i>Register</h3>
+
+    <form method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input class="form-control" name="username" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" name="password" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Role</label>
+        <select class="form-select" name="role">
+          <option value="customer" selected>Customer</option>
+          <option value="seller">Seller</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
+      <button class="btn btn-success w-100">Register</button>
+    </form>
+
+    <p class="text-center mt-3 small">Already registered? <a href="{{ url_for('users_bp.login') }}">Login</a></p>
+  </div>
+</div>
+{% endblock %}

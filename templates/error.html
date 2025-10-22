@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Error | Secure E-Commerce{% endblock %}
+{% block content %}
+<div class="container py-5 text-center">
+  <div class="card shadow-sm p-4">
+    <h2 class="text-danger">⚠️ {{ message }}</h2>
+    <p class="text-muted mt-2">If you think this is a mistake, please contact the admin.</p>
+    <a class="btn btn-secondary mt-3" href="{{ url_for('home') }}">Return Home</a>
+  </div>
+</div>
+{% endblock %}

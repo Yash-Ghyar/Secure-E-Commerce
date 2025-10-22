@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Orders{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="text-center mb-4 text-warning"><i class="fa-solid fa-boxes me-2"></i>Orders</h2>
+
+  {% if orders %}
+  <div class="table-responsive shadow-sm">
+    <table class="table table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th><th>Product</th><th>Price</th><th>Customer</th><th>Seller</th><th>Status</th><th>Time</th>
+          {% if role in ['seller','admin'] %}<th>Action</th>{% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in orders %}
+        <tr>
+          <td>{{ o.id }}</td>
+          <td>{{ o.product_name }}</td>
+          <td>₹{{ o.price }}</td>
+          <td>{{ o.customer }}</td>
+          <td>{{ o.seller }}</td>
+          <td>
+            <span class="badge {% if o.status == 'Placed' %}bg-info{% elif o.status == 'Delivered' %}bg-success{% else %}bg-secondary{% endif %}">
+              {{ o.status }}
+            </span>
+          </td>
+          <td>{{ o.timestamp }}</td>
+
+          {% if role in ['seller','admin'] %}
+          <td>
+            <form method="POST" action="{{ url_for('orders_bp.update_order_status', oid=o.id) }}" class="d-flex">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <select name="status" class="form-select form-select-sm me-2" style="width:110px;">
+                <option {% if o.status=='Placed' %}selected{% endif %}>Placed</option>
+                <option {% if o.status=='Shipped' %}selected{% endif %}>Shipped</option>
+                <option {% if o.status=='Delivered' %}selected{% endif %}>Delivered</option>
+              </select>
+              <button class="btn btn-sm btn-primary">Update</button>
+            </form>
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="alert alert-info">No orders found.</div>
+  {% endif %}
+</div>
+{% endblock %}
