@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Seller Dashboard{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="text-warning"><i class="fa-solid fa-store me-2"></i>Seller Dashboard</h2>
+    <div>
+      <a class="btn btn-success me-2" href="{{ url_for('products_bp.add_product') }}"><i class="fa-solid fa-plus me-1"></i> Add Product</a>
+      <a class="btn btn-outline-info" href="{{ url_for('orders_bp.seller_orders') }}"><i class="fa-solid fa-box-open me-1"></i> View Orders</a>
+    </div>
+  </div>
+
+  {% if products %}
+  <div class="table-responsive shadow-sm">
+    <table class="table table-hover align-middle">
+      <thead class="table-dark">
+        <tr><th>ID</th><th>Product</th><th>Price</th><th>Stock</th><th>Image</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for p in products %}
+        <tr>
+          <td>{{ p.id }}</td>
+          <td>{{ p.name }}</td>
+          <td>₹{{ p.price }}</td>
+          <td>{{ p.stock }}</td>
+          <td>
+            {% if p.image %}
+              <img src="{{ url_for('static', filename='uploads/' + p.image) }}" width="60" class="rounded">
+            {% else %}
+              <small class="text-muted">No image</small>
+            {% endif %}
+          </td>
+          <td>
+            <a class="btn btn-sm btn-primary" href="{{ url_for('products_bp.edit_product', pid=p.id) }}">Edit</a>
+
+            <form action="{{ url_for('products_bp.delete_product', pid=p.id) }}" method="POST" class="d-inline ms-1" onsubmit="return confirm('Delete product?')">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn-sm btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="alert alert-info">You have no products yet. Click Add Product to start.</div>
+  {% endif %}
+</div>
+{% endblock %}
